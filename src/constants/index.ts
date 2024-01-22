@@ -1,10 +1,14 @@
-// Import the `createUserWithEmailAndPassword` function from the `firebase/auth` module
-import { createUserWithEmailAndPassword } from "firebase/auth";
+// Import authentication functions from the `firebase/auth` module
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
 
 // Import `auth` and `db` from the `firebase-config` module
 import { auth, db } from "../firebase-config";
 
-// Import `collection`, `doc`, and `setDoc` from the `firebase/firestore` module
+// Import firestore functions from the `firebase/firestore` module
 import { collection, doc, setDoc } from "firebase/firestore";
 
 // Define the interface for user data
@@ -45,4 +49,26 @@ export const signup = async (
     console.error(error);
     return false;
   }
+};
+
+// User login function
+export const login = async (
+  email: string,
+  password: string
+): Promise<boolean> => {
+  try {
+    // Sign in with email and password using the Firebase function
+    await signInWithEmailAndPassword(auth, email, password);
+    return true;
+  } catch (error) {
+    // If there's an error, print it to the console and return false
+    console.error(error);
+    return false;
+  }
+};
+
+// User logout function
+export const logout = async () => {
+  // Sign out using the Firebase function
+  await signOut(auth);
 };
